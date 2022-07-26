@@ -1,0 +1,16 @@
+###############
+IMG:
+  TYPE: 'png'  # 'jpg' , '' , ...
+
+PATH:
+  INPUT_DIR: './imgs'
+  SAVE_DIR: './results'
+
+CROP:
+  NUMBER: 2    # cropping patch number
+  RANDOM: False # crop the patches by random select (True, False)
+  POSITION: 'B'  # "L"(eft), "R"(ight), "T"(op), "B"(ottom)
+  BOX_SIZES: 50
+  BOX_LOCAT: [[0, 0], [430, 270]]  # the pixel location of top-left corner [y, x]
+  BOX_COLOR: []
+  BOX_THICK: 1 # thickness of boundary box (pixel)

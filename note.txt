@@ -1,1 +1,548 @@
 
+上傳星期三的weekly report網址:
+http://cimuac:7102/UAC/?UL=http://au6ifs02:80/AUGIC_Develop/Publish/Publish_Index.aspx&uacResultMessage=[Login%20ASP.NET]%20No%20Login%20Footprint.%20Please%20Login%20Again.&SystemType=eCIM&SystemId=AUGIC&SysLocation=%e7%84%a1%e9%99%90%e5%88%b6&SystemType=eCIM&SystemType=eCIM&SystemType=eCIM&SystemId=AUGIC&SystemId=AUGIC&SystemId=AUGIC&SysLocation=%u7121%u9650%u5236&SysLocation=%u7121%u9650%u5236&SysLocation=%u7121%u9650%u5236
+/CM00 CIM工程處/部門行政文件庫 (行政管理用)/ADTEB0/IDD/EB3 Weekly Report
+
+Azure 下載
+\\Auo\gfs\CT000\DTE00\DTEB0\peterwhtsai\安裝檔
+
+Azure | 存放庫
+https://portal.azure.com/#@auoptronics.onmicrosoft.com/resource/subscriptions/a7bdf2e3-b855-4dda-ac93-047ff722cbbd/resourceGroups/OpenAI_RG/providers/Microsoft.ContainerRegistry/registries/openaiacr/repository
+
+CVAT relabel用的東西
+http://10.253.97.18:8080/tasks/387/jobs/334
+http://10.253.97.18:8080/tasks?page=1
+
+OPEN AI > istation 選場域
+https://open-ai-web.azurewebsites.net/AppStore/allapps
+
+QA istation:
+https://openai-app-station-qa.azurewebsites.net/
+
+M01 istation:
+https://openai-app-station.azurewebsites.net/
+
+申請Service Port
+http://tcai008/vision_ai/#!/1
+
+OPEN AI網站
+https://open-ai-web.azurewebsites.net/AppStore/allapps
+
+我的Node-Red網址
+http://tcai008/user/bobobwchen/admin/#flow/fefdf98a88b91ce9
+
+AI365
+http://gcp-aucm02.corpnet.auo.com/MLB/OurSolution/ListByFab/L6A
+
+可以看一些node-Red的東西 重要 ## (但不要動到) ##
+## (不要動到) ##
+http://10.96.10.159:8080/
+## (不要動到) ## 進去之後選要得然後把網址中ui後面的東西都刪掉
+http://10.96.15.6:8080/
+
+QA istation上主看主機跟部屬APP的網址
+http://10.96.10.159:8080/
+M01 istation上主看主機跟部屬APP的網址
+http://10.88.215.105:8080/
+
+M01 DLAP07 SOP Copilot
+http://10.88.210.222:1913/ui
+M01 DLAP07 measure
+http://10.88.210.222:1912/ui
+
+在直接在網址增加刪除edge的地方
+http://10.96.10.159:8080/node_register/
+
+公用帳號 (tcnx047)
+帳號: cimadmin
+密碼; cim$edge
+
+istation管理者密碼
+密碼:cim$admin
+
+一些控制鏡頭的指令
+看一些鏡頭可以設定的資訊:
+v4l2-ctl -L
+放大鏡頭視野:
+v4l2-ctl -c zoom_absolute=140 -d /dev/video2
+exposure_time_absolute（曝光时间）
+exposure_dynamic_framerate（曝光动态帧率）
+pan_absolute（绝对水平旋转角度）
+tilt_absolute（绝对倾斜角度）
+focus_absolute（绝对焦距）
+focus_automatic_continuous（连续自动对焦）
+zoom_absolute（绝对缩放）
+
+v4l2-ctl -c pan_absolute=3600 -d /dev/video8
+
+
+即時顯示鏡頭畫面:
+gst-launch-1.0 v4l2src ! ximagesink
+gst-launch-1.0 v4l2src device=/dev/video0 ! videoconvert ! ximagesink
+拍照:
+ffmpeg -i /dev/video0 -frames 1 test.png
+錄影:
+ffmpeg -hide_banner -i /dev/video8 -t 300 -c:v mpeg4 test.mp4
+
+為嘗試過可以試試看錄影: (可能打不開?)
+ffmpeg -f v4l2 -input_format mjpeg -video_size 1920x1080 -framerate 10 -i /dev/video0 output.mp4
+
+看資訊:
+ffplay -i xxx.mp4
+其它:
+lsusb #看接在USB上的設備
+pwd #看現在在的路徑
+
+rtsp教學:
+以我們TP-Link的來講:
+	1. 找一個AP接上電腦與IP cam 連上他提供的IP(要查說明書)
+	2. 找包裝上的MAC開108表單跟IT申請白名單與固定IP
+	3. 1+2好了之後，在他提供的那邊設定上去固定IP等等等
+	4. 之後插上LAB的網孔 (主機與IPCAM同網域)
+	5. 依說明書寫rtsp (各家不同要查)
+	6. rtsp範例: rtsp://admin:admin@10.96.x.x:554/stream2
+以海康威視來說:
+	1. 跟上面差不多但，俊威用的找他
+	2. rtsp範例: rtsp://admin:xoko6109958@192.168.2.14/Streaming/Channels/101
+
+主機缺環境可以去這裡找，開 container mount下來用，只有005有外網
+https://portal.azure.com/#@auoptronics.onmicrosoft.com/resource/subscriptions/a7bdf2e3-b855-4dda-ac93-047ff722cbbd/resourceGroups/OpenAI_RG/providers/Microsoft.ContainerRegistry/registries/openaiacr/repository
+^^它就像是個虛擬環境，有能用就先用，出現真的沒有的環境去找汶樺問怎麼自己開一個
+
+M01 Master:
+tw100105836 10.88.215.105
+可以看部屬下去pod的狀態
+kubectl get pods # 可以看這下面所有的pod叫啥
+kubectl logs -f sop-copilot-m01dlap04 -c app-flow1 --tail=100 # 看04這台主機上 app-flow1的log
+kubectl logs -f sop-copilot-tcai005 --tail=100 # 看04這台主機上 app-flow1的log
+
+	
+QA Master:
+test-master 10.96.10.159
+
+第一次用主機要mount之類的都要先跑這個
+echo Savu/NgxBh4=x 1ak/Sadp1Ymd99t9KO9 | docker login -u openaiacr --password-stdin openaiacr.azurecr.io
+echo 2BB7XHJPmA//xZ3MOJuAuo0J7gy7wzKB | docker login -u openaiacrpull --password-stdin openaiacr.azurecr.io
+^^^ 兩個都可以試試 (試試就逝世 ㄎㄎ)
+
+要創新的container時要先確認是否有在這沒的話要去網站pull
+docker images | grep 'xxx'
+https://portal.azure.com/#view/Microsoft_Azure_ContainerRegistries/TagMetadataBlade/registryId/%2Fsubscriptions%2Fa7bdf2e3-b855-4dda-ac93-047ff722cbbd%2FresourceGroups%2FOpenAI_RG%2Fproviders%2FMicrosoft.ContainerRegistry%2Fregistries%2Fopenaiacr/repositoryName/auo%2Fmediapipe/tag/1.0.0-x86
+## 網站範例 (mediapipe)
+docker pull xxxx
+
+http request 指是看一下而已確認這個地址可以使用
+curl -sv http://localhost:xxxx
+## xxxx 是 port號 5125是量測的; 5110medipipe (localhost或是tcai005之類的要去查是公用網域還是走虛擬網卡，取決於docker run時有沒有設定--dns=IP_ADDRESS.. 172是default)
+
+可以看網域
+docker inspect xxx | less -s (172是default)
+
+可以看這台主機上的IP address (可以找port但我還真的看不懂)
+netstat -nltp
+
+看port號 或上GitLab找
+docker history openaiacr.azurecr.io/auo/smartmeasure-svc:0.2.4 --no-trunc | head -n2
+
+刪除容器
+docker rm 'xxx'
+看容器是否存在
+docker ps | grep 'xxx'
+docker ps -a (看全部)
+docker start 'xxx' (啟動EXIT的容器)
+ps aux | grep pycharm 查看啟動的pycharm
+
+
+用網路的東西
+nmtui
+
+即時影像翻轉
+/dev/video0 ! videoflip method=4 (2垂直翻轉)
+
+這裡面有憑證可以下載
+/home/nfs/user/waynecwhsu/ssl/TMGCert.crt
+
+憑證沒有在啟動container時使用的話就要cp進去	# xxxx 要改成container名稱
+docker cp /home/nfs/user/waynecwhsu/ssl/TMGCert.crt xxxx:/usr/local/share/ca-certificates/TMGCert.crt
+
+tcai005 上可以安裝外網的東西
+apt-get install build-essential
+export http_proxy=http://BoboBWChen:$a@auohqwsg.corpnet.auo.com:8080
+read -s a (enter後打密碼) # 下面代 $a 就會輸入密碼了 (比較安全)
+pip install numpy c
+
+patchcore網址
+http://tcaigitlab2/peterwhtsai/build-fastapi-adtoolboxnodered-svc/-/blob/master/app/train.py
+(class_name 是在 datasets資料夾下自己設的名字之後會存在那)
+(result_path 會是之後存結果的地方，正常會跟class_name一樣)
+http://tcai009:5125/docs2#/default/ADuploadmodel_ADuploadmodel__post
+可以上傳字典的位置 /ADuploadmodel/
+
+SOP Copilot 俊威coding的地方
+http://tcai009:1800/ui/#!/2?socketid=82oNanFnBjXtOoHsAABn
+
+call API範例
+import requests
+
+url = f'http://localhost:{port}/train_status/'
+data = {"sokeid": sokeid, "status": "stop", "result": None}
+a = requests.post(url, data = data)
+
+丟圖上量測APP
+curl -X POST http://10.96.10.159:1931/detect_image/CNT_cam1/2 -H 'Content-Type: multipart/form-data' -F "data=@/opt/nodered/smartmeasure/images/cam1.png"
+
+
+docker run -d -it --gpus all --shm-size 32G --network-host --runtime nvidia --name bobo_semi -v /home/shellychen/semi/Semi_supervised_handover/:/data_mnt -v /home/bobobwchen/:/mnt openaiacr.azurecr.io/nick_env:24249 bash
+docker run -d -it --gpus all --shm-size 32G --network-host --runtime nvidia --name Parler-TTS -v /usr/local/cuda:/usr/local/cuda -v /home/bobobwchen/:/mnt -v /home/ruitengwang/:/rmnt openaiacr.azurecr.io/auo/whisper-svc:0.2.6
+
+
+docker exec -it mediapipe_test bash
+## tcai005:mediapipe_test 測試環境 from peter ## (環境變數env可以查他的PORT是5123我要自己改成5167才可以用 export PORT=5167)
+
+
+===========================
+screen
+在裡面跑要跑的
+Ctrl + A 再按D
+跑出去外面
+回來screen
+screen -r 可以查哪個ID
+screen -r [ID] 可以回來
+===========================
+
+Train:
+python train.py --workers 8  --batch-size 16 --epochs 250 --data /mnt/all_0918/all_dataset_20230918.yaml --img 320 320 --cfg /cfg/deploy/yolov7.yaml --weights '/app/yolov7/runs/train/yolov7_100/weights/last.pt' --name yolov7_all --hyp /data/hyp.scratch.p5.yaml
+nohup python train.py --workers 8  --batch-size 16 --epochs 250 --data /mnt/all_0918/all_dataset_20230918.yaml --img 320 320 --cfg /cfg/deploy/yolov7.yaml --weights 'runs/train/yolov7_all6_2/weights/last.pt' --name yolov7_all6_3 --hyp /data/hyp.scratch.p5.yaml &
+[1] 29554 ^^上面這個的PID (在014)
+nohup python -u train.py --workers 8  --batch-size 18 --epochs 250 --data /mnt/object/object_20230920.yaml --img 320 320 --cfg /cfg/deploy/yolov7.yaml --weights '/app/weight/yolov7-e6e.pt' --name yolov7_object --hyp /data/hyp.scratch.p5.yaml > /mnt/yolov7_result/OUTPUT.txt &
+[1] 16822 ^^上面這個的PID (在013)
+nohup python -u train.py --workers 8  --batch-size 8 --epochs 100 --data /mnt/people/people_train.yaml --img 320 320 --cfg /cfg/deploy/yolov7.yaml --weights '' --name yolov7_people --hyp /data/hyp.scratch.p5.yaml > /mnt/yolov7_result/OUTPUT.txt &
+[1] 278 ^^上面這個的PID (在009)
+python train.py --workers 8  --batch-size 16 --epochs 250 --data /mnt/odf/odf_001_train.yaml --img 640 640 --cfg /cfg/deploy/yolov7.yaml --weights '/app/weight/yolov7.pt' --name test --hyp /data/hyp.scratch.p5.yaml
+
+無翻轉
+python train.py --workers 8  --batch-size 16 --epochs 200 --data /mnt/S17_S21/obj_train_2.yaml --img 640 640 --cfg /cfg/deploy/yolov7-tiny.yaml --weights '/app/weight/yolov7-tiny.pt' --name hand_tracking_0711 --hyp /data/hyp.scratch.p5_noflip.yaml
+無翻轉+馬賽克+其他所有增強關閉
+python train.py --workers 8  --batch-size 16 --epochs 50 --data /mnt/S17_S21/obj_train_2.yaml --img 640 640 --cfg /cfg/deploy/yolov7-tiny.yaml --weights '/mnt/yolov7_result/train/hand_tracking_0711/weights/best.pt' --name hand_tracking_0711_nomosaic_0715 --hyp /hyp.scratch.p5_noflip_nomosaic_nowarmup_noscale_lr0.001_lrf0.5.yaml
+
+s
+最前面加 nohup: 後臺執行 ()
+最後面加 &: 背景執行
+top
+
+一大排老torch可以找
+https://download.pytorch.org/whl/torch_stable.html
+
+pypi 可以改成 simple的去看套件
+https://pypi.org/simple/onnx/
+
+debian 查系統套件
+https://www.debian.org/distrib/packages#search_packages
+
+要包 image 可以參考
+http://tcaigitlab2.corpnet.auo.com/peterwhtsai/test-image/-/tree/master
+http://tcaigitlab2.corpnet.auo.com/peterwhtsai/build-fastapi-adtoolboxnodered-svc/-/tree/master
+
+Re-train:
+nohup python -u train.py --workers 8  --batch-size 18 --epochs 250 --data /mnt/object/object_20230920.yaml --img 320 320 --cfg /cfg/deploy/yolov7.yaml --weights '/app/weight/yolov7-e6e.pt' --name yolov7_object --hyp /data/hyp.scratch.p5.yaml > /mnt/yolov7_result/output.txt &
+
+https://dev.azure.com/AUO-OpenAI/
+
+Test:
+# all
+python test.py --data /mnt/all_0918/all_dataset_20230918.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3/weights/best.pt --name yolov7_all_val --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918_test_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3/weights/best.pt --name yolov7_all_ERC --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918_test_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3/weights/best.pt --name yolov7_all_L8B --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3_retrain2/weights/best.pt --name yolov7_all_retrain_val --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918_test_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3_retrain2/weights/best.pt --name yolov7_all_retrain_ERC --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918_test_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3_retrain2/weights/best.pt --name yolov7_all_retrain_L8B --save-txt --save-conf
+# Object
+python test.py --data /mnt/object/object_20230920.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_22/weights/best.pt --name yolov7_object_val --save-txt --save-conf
+python test.py --data /mnt/object/object_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_22/weights/best.pt --name yolov7_object_ERC --save-txt --save-conf
+python test.py --data /mnt/object/object_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_22/weights/best.pt --name yolov7_object_L8B --save-txt --save-conf
+python test.py --data /mnt/object/object_20230920.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_retrain/weights/best.pt --name yolov7_object_retrain_val --save-txt --save-conf
+python test.py --data /mnt/object/object_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_retrain/weights/best.pt --name yolov7_object_retrain_ERC --save-txt --save-conf
+python test.py --data /mnt/object/object_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_retrain/weights/best.pt --name yolov7_object_retrain_L8B --save-txt --save-conf
+python test.py --data /mnt/object_retrain/object_retrain_test.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_object_retrain/weights/best.pt --name yolov7_object_retest --save-txt --save-conf
+# People
+python test.py --data /mnt/people/people_train.yaml --img 320 --batch 8 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_100_250/weights/best.pt --name yolov7_people_val --save-txt --save-conf
+python test.py --data /mnt/people/people_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_100_250/weights/best.pt --name yolov7_people_ERC --save-txt --save-conf
+python test.py --data /mnt/people/people_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_100_250/weights/best.pt --name yolov7_people_L8B --save-txt --save-conf
+python test.py --data /mnt/people_retrain/people_retrain_test.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_retrain/weights/best.pt --name yolov7_people_retrain --save-txt --save-conf
+python test.py --data /mnt/people/people_train.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_retrain/weights/best.pt --name yolov7_people_retrain_val --save-txt --save-conf
+python test.py --data /mnt/people/people_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_retrain/weights/best.pt --name yolov7_people_retrain_L8B --save-txt --save-conf
+python test.py --data /mnt/people/people_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_people_retrain/weights/best.pt --name yolov7_people_retrain_ERC --save-txt --save-conf
+# Crane
+python test.py --data /mnt/tcai015/crane/crane_train.yaml --img 320 --batch 8 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_crane/weights/best.pt --name yolov7_crane_val --save-txt --save-conf
+python test.py --data /mnt/tcai015/crane/crane_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_crane/weights/best.pt --name yolov7_people_L8B --save-txt --save-conf
+python test.py --data /mnt/tcai015/crane_retrain/crane_retest.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_crane_retrain/weights/best.pt --name yolov7_crane_retrain --save-txt --save-conf
+python test.py --data /mnt/tcai015/crane/crane/crane_train.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_crane_retrain/weights/best.pt --name yolov7_crane_retrain_val --save-txt --save-conf
+python test.py --data /mnt/tcai015/crane/crane/crane_L8B.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_crane_retrain/weights/best.pt --name yolov7_crane_retrain_L8B --save-txt --save-conf
+# Helmet
+python test.py --data /mnt/tcai015/helmet/helmet_train.yaml --img 320 --batch 8 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_helmet/weights/best.pt --name yolov7_helmet_val --save-txt --save-conf
+python test.py --data /mnt/tcai015/helmet/helmet_ERC.yaml --img 320 --batch 8 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_helmet/weights/best.pt --name yolov7_helmet_ERC --save-txt --save-conf
+python test.py --data /mnt/tcai015/helmet/helmet_L8B.yaml --img 320 --batch 8 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_helmet/weights/best.pt --name yolov7_helmet_L8B --save-txt --save-conf
+
+python test.py --data /mnt/all_0918/all_dataset_20230918.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3/weights/best.pt --name yolov7_all_200_val --save-txt --save-conf
+python test.py --data /mnt/all_0918/all_dataset_20230918_test_ERC.yaml --img 320 --batch 16 --conf 0.01 --iou 0.65 --device 0 --weights /app/yolov7/runs/train/yolov7_all6_3/weights/best.pt --name yolov7_all_200_ERC--save-txt --save-conf
+
+yolo 轉 ONNX 方法
+python3 export.py --weights ./best_4th.pt --grid --end2end --simplify  --topk-all 100 --iou-thres 0.65 --conf-thres 0.5 --img-size 640 640 --max-wh 640 --rknpu
+
+ONNX 轉 RKNN 方法
+python3 convert.py /mnt/RKNN/yolov7-main/best_semi.onnx rk3588 i8
+python convert.py <onnx_model> <TARGET_PLATFORM> <dtype(optional)> <output_rknn_path(optional)>
+<onnx_model> : 你的模型
+<TARGET_PLATFORM> :平台 rk3588 
+<dtype(optional)>: 可選 i8 (塊但精度低) fp (慢一點但精度高)
+<output_rknn_path(optional)>: 指定RKNN模型的儲存路徑，預設與ONNX模型同名在同一目錄下yolov7.rknn
+
+rtmpose 轉 ONNX 方法
+python3 deploy.py ../configs/mmpose/pose-detection_simcc_onnxruntime_dynamic.py ../../mmpose-main/YOLOv7_RTMPose/configs/hand_2d_keypoint/rtmpose/hand5/rtmpose-m_8xb256-210e_hand5-256x256.py /mnt/RKNN/weight/rtmpose-m_simcc-hand5_pt-aic-coco_210e-256x256-74fb594_20230320.pth /mnt/RKNN/test.jpg
+
+rtmpose ONNX 轉 RKNN 的方法
+python3 convert_retpose.py 
+
+rtmpose 轉 ONNX + RKNN 的方法
+python3 deploy.py ../configs/mmpose/pose-detection_rknn-int8_static-256x256.py ../../mmpose-main/YOLOv7_RTMPose/configs/hand_2d_keypoint/rtmpose/hand5/rtmpose-m_8xb256-210e_hand5-256x256.py /mnt/RKNN/weight/rtmpose-m_simcc-hand5_pt-aic-coco_210e-256x256-74fb594_20230320.pth /mnt/RKNN/test.jpg
+python3 deploy.py ../configs/mmpose/pose-detection_rknn-fp16_static-256x256.py ../../mmpose-main/YOLOv7_RTMPose/configs/hand_2d_keypoint/rtmpose/hand5/rtmpose-m_8xb256-210e_hand5-256x256.py /mnt/RKNN/weight/rtmpose-m_simcc-hand5_pt-aic-coco_210e-256x256-74fb594_20230320.pth /mnt/RKNN/test.jpg
+
+NPU run yolov7 (yolov7_bobo.py)
+python3 yolov7_bobo.py --model_path /home/orangepi/Bobo/weight/best_4th_i8.rknn --img_folder /home/orangepi/Bobo/SOP20240508_154200028/ --anchors /home/orangepi/Bobo/packing_whl/rknn_model_zoo/examples/model/anchors_yolov7.txt --ccnms --overlap_ratio 0.9 --img_save
+
+NPU run rtmpose (rtmpose_bobo.py)
+python3 rtmpose_bobo.py --model_path /home/orangepi/Bobo/weight/rtmpose_pose-detection_rknn-int8_static-256x256.rknn --img_folder /home/orangepi/Bobo/SOP20240508_154200028/
+
+NPU run yolov7 + rtmpose (yolov7+rtmpose.py)
+python3 yolov7_rtmpose.py --first_model_path  /home/orangepi/Bobo/weight/best_4th_i8.rknn --second_model_path /home/orangepi/Bobo/weight/rtmpose_pose-detection_rknn-int8_static-256x256.rknn --img_folder /home/orangepi/Bobo/test_only/ --ccnms --overlap_ratio 0.9 --img_draw
+python3 yolov7_rtmpose.py --first_model_path  /home/orangepi/Bobo/weight/best_full_i8.rknn --second_model_path /home/orangepi/Bobo/weight/rtmpose_0625.rknn --img_folder /home/orangepi/Bobo/origin/packing/SOP20240506_190309276 --anchors /home/orangepi/Bobo/packing_whl/rknn_model_zoo/examples/model/anchors_semi_zoom30.txt --ccnms --overlap_ratio 0.9 --img_draw --keypoint_threashold 0.2 --keypoint_stick_threashold 0.4 --stick_threashold 3 --edge_range 3
+python3 yolov7_rtmpose.py --first_model_path  /home/orangepi/Bobo/weight/best_only_S17_i8.rknn --second_model_path /home/orangepi/Bobo/weight/rtmpose_0625.rknn --img_folder /home/orangepi/Bobo/origin/C123/SOP20240505_093514285/ --anchors /home/orangepi/Bobo/packing_whl/rknn_model_zoo/examples/model/anchors_only_S17.txt --ccnms --overlap_ratio 0.9 --img_draw --keypoint_threashold 0.15 --keypoint_stick_threashold 0.4 --stick_threashold 4 --edge_range 3 --draw_heatmap --save_crop
+
+
+殺掉命令
+Kill -9 [ID]
+
+看有誰在跑
+tail /proc/*/cmdline
+
+看有那些python3在跑
+ps -eo cmd | grep python3
+找到 xxx.py 的 PID 
+pgrep -f xxx.py
+砍了他
+kill -9 PID
+
+可以參考的，起image FROM方法
+https://hub.docker.com/layers/pytorch/pytorch/1.13.0-cuda11.6-cudnn8-runtime/images/sha256-8711d55e2b5c42f3c070e1f2bacc2d1988c9b3b5b99694abc6691a852536efbe?context=explore
+
+
+看命令吃多少記憶體
+docker stats bobo_yolov7_2
+
+複製docker裡面的資料出來
+docker cp bobo_yolov7_2:/app/yolov7/runs/train/yolov7_0918 /home/bobobwchen/data_cleansing/
+
+然後訓練的data的資料結構，請參閱” yolo_m01-v2_valid.zip”：\\Auo\gfs\CT000\DTE00\DTEB0\bobcchuang\交接\yolov7訓練\data
+ 
+Yolov7 offline訓練步驟供參考
+dataset和yaml檔可參考 /home/nfs/user/bobcchuang/yolov7/dataset/t1_data
+紫色：server上執行指令
+綠色：container內執行的指令
+ 
+找一台主機(在tcai014)
+ 
+啟container
+docker run -d -it --gpus all --shm-size 32G --network-host --runtime nvidia --name bobo_semi -v /home/shellychen/semi/Semi_supervised_handover/:/data_mnt -v /home/bobobwchen/:/mnt openaiacr.azurecr.io/nick_env:24249 bash
+docker run -d -it --gpus all --shm-size 32G --network-host --runtime nvidia --name bobo_whisper --net=host -v /usrdata/finetune_whisper:/workspace bobo_whisper bash 
+docker run -d -it --gpus all --shm-size 32G --network host --runtime nvidia --name whisper -v /home/ruitengwang:/rmnt -v /home/bobobwchen/:/mnt openaiacr.azurecr.io/auo/whisper-svc:0.2.0e bash
+
+
+進container在/app下建temp_data資料夾
+docker exec -it yolov7_train_svc_t1_data bash
+mkdir temp_data 
+ 
+複製dataset和yaml檔到container內
+docker cp t1_data.zip yolov7_train_svc_t1_data:/app/temp_data
+docker cp t1_data.yaml yolov7_train_svc_t1_data:/app/temp_data
+ 
+資料解壓縮&開始訓練
+cd /app/temp_data 
+unzip t1_data.zip
+# 檢查資料夾檔名"obj_valid_data"不是"obj_vaild_data"!!!!! 
+ 
+cd /app/yolov7
+python train.py --workers 8  --batch-size 8 --epochs 300 --data /app/temp_data/t1_data.yaml --img 320 320 --cfg cfg/deploy/yolov7.yaml --weights '' --name yolov7 --hyp data/hyp.scratch.p5.yaml
+
+##我自己的是在 /mnt 因為有把資料傳到container裡面##
+
+部屬APP
+MyAUO/DT/OPENIDE/全流程開發/Verify/iStation/找要得APP
+如果主機沒在上面要進入管理者模式(右上角切換密碼:cim$admin)
+上面那一排三個點找edge/add edge device (要有IP位址各種資料填一填)
+
+#### 開發一個APP的流程 ####
+1.  開發.py核心 (要以可以呼叫API的方法去寫svc.py) 可以參考網址裡面的app/svc.py #http://tcaigitlab.corpnet.auo.com/dt/adtea3/build-hand-catch-svc
+2.  找俊威開GitLab Repository要給他你要得名字 (命名規則Build-xxx-svc)
+3.  clone下來他開的GitLab (因為之後這樣更新才可以有連結上去) # clone 可以按右鍵
+4.  把之前寫的code放到那個clone下來的資料夾就可以更新上去了
+5.  更新前他會是打X的狀態因為我們還沒有上傳上去GitLab要上傳要按右鍵選 Git commit(小烏龜)
+6.  小烏龜裡面的message要自己打 (參考Wiki的格式) #http://tcaigitlab.corpnet.auo.com/dt/adtea3/guideline/-/wikis/CommitMessageGuide
+7.  commit&push上來後上GitLab Repository/Tags 選New tag
+8.  Tag name寫版本號 x.x.x規則要查一下； message一樣參考wiki 下面的Release notes相同就好 #http://tcaigitlab.corpnet.auo.com/dt/adtea3/guideline/-/wikis/CommitMessageGuide
+9.  CI/CD跑Run Pipeline通過了會取得image (一個Azure的網址的感覺)
+10. 把剛剛獲得的image啟動 (右邊啟動service打上獲得的image記得前面要去掉已經有的那段) #http://tcai008/vision_ai/#!/2?socketid=hdOScJtfbU9YaxvpAAD_
+11. 現在可以開始再node-Red拉sub-flow了
+12. 拉好sub-flow選匯出 (注意: 現在的節點、並且不要按整個依照需要的去按否則會出問題)
+13. 找俊威開GitLab (命名規則node-red-contrib-auo-xxx-xxx)
+14. 另外內容參考網址flow.json就是flow匯出的;package.json要注意怎麼寫版本也要一致 #http://tcaigitlab.corpnet.auo.com/dt/adtea3/node-red-contrib-auo-hand-catch
+15. 寫Tag同第8點  #http://tcaigitlab.corpnet.auo.com/dt/adtea3/guideline/-/wikis/CommitMessageGuide
+16. 註冊元件，元件名稱同GitLab;版本一定要一致Node Package後面要寫#x.x.x版本;service image就前面的azure那個;最後環境變數參考下面範例就好 #http://tcai008/vision_ai/#!/3?socketid=hdOScJtfbU9YaxvpAAD_
+17. Node package 自動打包APP (打包APP接下來再問ㄅ) #http://tcai008/build/#!/0?socketid=hHDbbHJ9FW7_ZhH4AAC3
+18. ...
+#### 開發一個APP的流程 ####
+
+Vision AI 平台開發手冊
+https://hackmd.io/v75XY4YGR7aGu9-9Xp16zA#0-%E9%96%8B%E7%99%BC%E7%B5%84%E8%A3%9D%E9%83%A8%E7%BD%B2%EF%BC%8C%E4%B8%89%E5%80%8B%E7%92%B0%E5%A2%83%E7%9A%84%E4%BB%8B%E7%B4%B9
+
+CgatGPT node
+Endpoint: https://chatgptpoc02.openai.azure.com/
+Key: 8b821b118413455a9ca1ec442bc67b1d
+
+查網路指令:
+看IP、mask: ifconfig (etp 10.96台中)
+看gateway: ip route
+看DNS: cat /etc/resolv.conf
+
+圖形化介面設定固定IP:(國祥有裝插件的情況)
+右上角 > Edit connections > IPv4 setting > Method > Manual
+要打4個東西: address、mask、Gateway、DNS
+用上面那三個指令找
+
+cimadmin@m01dlapedge04
+帳: cimadmin
+密: cim$edge
+MAC: 00:19:0f:46:17:79  
+線編: L4CFAD3-23
+位置: GM offline MB-LOAD
+
+cimadmin@m01dlapedge07
+帳: cimadmin
+密: cim$edge
+MAC: 00:19:0f:46:17:77
+線編: L3AFAD7-15w
+位置: GM line CNT CHECK
+
+IP: 10.96.40.138
+名稱: orangepi501
+mac: 00:00:a4:cd:5e:bf
+帳號: orangepi
+密碼: orangepi
+
+IP: 10.96.40.138
+名稱: orangepi502
+mac: 00:00:a4:cd:5e:bf
+帳號: orangepi
+密碼: orangepi
+
+cimadmin@masterautoinstall
+IP: 10.96.42.75
+名稱: masterautoinstall
+mac: 04:42:1a:df:fe:b5
+帳號: cimadmin
+密碼: cim$edge
+
+adlink@tcaieosjnx01
+IP: 10.96.41.38
+帳號: adlink
+密碼: adlink
+
+登入超級用戶
+sudo su - 
+
+10.8.15.169 > 10.9.239.25 > ssh orangepi@x.x.x.x
+
+遠端桌面 (10.9.239.25):
+cimadmin
+TheUserN0NeedPassw0rd.
+
+S17 從istation ssh 到 orangepi上
+ssh orangepi@10.9.239.156
+      ^這是帳號
+
+另一個比較快的遠端桌面 S17 (auxcimts2):
+BoboBWChen
+6166wiwiwiwI!
+登入到 AUO (記得換)
+
+auxcimts2 > 10.9.239.25 > ssh
+
+kubectl get pod -o wide
+可以看到這台istation下的container
+
+kubectl exec -it xxxx -c app-flow1 -- bash
+進去該container
+
+cd /tmp 進去隨便一個資料夾 
+
+curl http://....mp4 (Azure鏈結) > xxxx.mp4 下載影片
+
+timedatectl set-ntp '2024-0x-xx xx:xx:xx'
+
+S21 遠端
+10.38.12.65 > 10.38.160.83 > 10.38.160.83:8080
+
+跳板機: 10.38.12.65 
+遠端到 Master: 10.38.160.83
+8080: 10.38.160.83:8080
+
+可以下載一些外網的東西
+maz-openaidkr01 > NT帳號
+開起 TerMinal > chromium-browser 
+
+master查pod
+kubectl get pod -o wide
+
+進 container
+kubectl exec -it xxxx -c -app-flow1 -- bash
+
+sop-copilot Camera URL播影片路徑
+/usr/src/node-red/.auo/sop-copilot/sop-copilot-m01dlap07/
+/usr/src/node-red/.auo/sop-copilot/sop-copilot-mvp6102aedge01/
+/usr/src/node-red/.auo/sop-copilot/sop-copilot-mvp6102aedge01/PCBA_0116.mp4
+/usr/src/node-red/.auo/sop-copilot/sop-copilot-m01dlap07/0102_CNT.mp4
+/usr/src/node-red/.auo/sop-copilot/
+
+105表單 (白名單)參考表單號
+852052 汶樺提供
+857988 國祥 實驗室DLAP
+
+張皓鈞 524320  Form108表單 (M01 DLAP) 申請IOT網段+產編
+
+10.96.40.83
+
+查NPU使用率
+cat /sys/kernel/debug/rknpu/load
+
+yolov7 含 cross classes NMS 指令
+python3 yolov7_bobo.py --model_path ../../../../weight/best_4th_i8.rknn --ccNMS --overlap_ratio=0.9 --img_folder /home/orangepi/Bobo/SOP20240505_032811851/ --img_save
+
+轉換成影片 (兩個可設定但基本上處理好的)
+python3 convert_to_video.py
+
+RuiTeng Wang 王瑞騰 NT
+ruitengwang
+2406177Auo+0621
+
+microsoft Azure
+2309048@auovide.onmicrosoft.com
+6166wiwI
+
+可以到外網的網站:
+https://client.wvd.microsoft.com/arm/webclient/index.html
+
+account: telleradmin 
+password: Teller$admin01
+Host 20.212.170.167 
+
+
+
